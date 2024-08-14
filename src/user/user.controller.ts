@@ -11,9 +11,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 
 import { ClassValidatorPipe } from '../common/class-validator.pipe';
+import { Roles } from '../common/roles.decorator';
+import { RolesGuard } from '../common/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
@@ -24,7 +27,8 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.NO_CONTENT)
-  // @UsePipes(new ZodValidationPipe(createUserSchema))
+  @UseGuards(RolesGuard)
+  @Roles(['admin'])
   create(@Body(new ClassValidatorPipe()) createUserDto: CreateUserDto) {
     console.log('createUserDto', createUserDto);
     return this.userService.create(createUserDto);
