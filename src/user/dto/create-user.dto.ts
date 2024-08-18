@@ -1,30 +1,27 @@
-// import { z } from 'zod';
-import { IsBoolean, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsEmail, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
+  username: string;
+
+  @IsString()
   name: string;
+
+  @IsEmail()
+  email: string;
 
   @IsInt({ message: 'Age must be an integer' })
   @Min(18, { message: 'Age must be greater than or equal to 18' })
   @Max(65, { message: 'Age must be less than or equal to 65' })
-  age: number;
+  @IsOptional()
+  age?: number;
 
   @IsString()
-  gender: string;
-
-  @IsBoolean()
   @IsOptional()
-  isAdmin?: boolean;
+  gender?: string;
+
+  @MaxLength(10, {
+    each: true,
+  })
+  roles: string[];
 }
-
-// export const createUserSchema = z
-//   .object({
-//     name: z.string(),
-//     age: z.number(),
-//     gender: z.string(),
-//     isAdmin: z.boolean().optional(),
-//   })
-//   .required();
-
-// export type CreateUserDto = z.infer<typeof createUserSchema>;

@@ -30,15 +30,14 @@ export class UserController {
   @UseGuards(RolesGuard)
   @Roles(['admin'])
   create(@Body(new ClassValidatorPipe()) createUserDto: CreateUserDto) {
-    console.log('createUserDto', createUserDto);
     return this.userService.create(createUserDto);
   }
 
   @Get()
-  @Header('Content-Type', 'application/json')
+  // @Header('Content-Type', 'application/json')
   findAll() {
-    throw new HttpException('Well, not really forbidden', HttpStatus.FORBIDDEN);
-    // return this.userService.findAll();
+    // throw new HttpException('Well, not really forbidden', HttpStatus.FORBIDDEN);
+    return this.userService.findAll();
   }
 
   @Get(':id')
