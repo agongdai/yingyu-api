@@ -3,9 +3,7 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
   HttpCode,
-  HttpException,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -14,9 +12,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { ClassValidatorPipe } from '../common/class-validator.pipe';
-import { Roles } from '../common/roles.decorator';
-import { RolesGuard } from '../common/roles.guard';
+import { Roles } from '@/common/roles.decorator';
+import { RolesGuard } from '@/common/roles.guard';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
@@ -29,7 +27,7 @@ export class UserController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(RolesGuard)
   @Roles(['admin'])
-  create(@Body(new ClassValidatorPipe()) createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 

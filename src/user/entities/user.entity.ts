@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Course } from '@/course/entities/course.entity';
 
 @Entity()
 export class User {
@@ -25,4 +27,7 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Course, (course) => course.tutor)
+  courses: Course[];
 }
