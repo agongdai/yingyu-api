@@ -1,3 +1,4 @@
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import {
   Body,
   Controller,
@@ -10,6 +11,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { Roles } from '@/common/roles.decorator';
@@ -32,7 +34,8 @@ export class UserController {
   }
 
   @Get()
-  // @Header('Content-Type', 'application/json')
+  @CacheTTL(60000)
+  @UseInterceptors(CacheInterceptor)
   findAll() {
     // throw new HttpException('Well, not really forbidden', HttpStatus.FORBIDDEN);
     return this.userService.findAll();
