@@ -1,6 +1,7 @@
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -19,6 +20,7 @@ import { RolesGuard } from '@/common/roles.guard';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserVisible } from './entities/user.visible';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -41,9 +43,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: string) {
+    const user = await this.userService.findOne(+id);
+    return user ? new UserVisible(user) : null;
   }
 
   @Patch(':id')
