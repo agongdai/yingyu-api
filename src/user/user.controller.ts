@@ -23,7 +23,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserVisible } from './entities/user.visible';
 import { UserService } from './user.service';
 
-@Controller('user')
+@Controller({
+  version: '2',
+  path: 'user',
+})
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

@@ -1,3 +1,4 @@
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { ClassValidatorPipe } from '@/common/class-validator.pipe';
@@ -11,6 +12,10 @@ async function bootstrap() {
   app.use(logger);
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ClassValidatorPipe());
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
   await app.listen(3000);
 }
 bootstrap();
