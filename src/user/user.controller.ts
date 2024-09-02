@@ -11,10 +11,14 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Req,
+  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { Request, Response } from 'express';
 
+import { Cookies } from '@/common/cookie.param';
 import { Roles } from '@/common/roles.decorator';
 import { RolesGuard } from '@/common/roles.guard';
 
@@ -41,8 +45,14 @@ export class UserController {
   @Get()
   @CacheTTL(60000)
   @UseInterceptors(CacheInterceptor)
-  findAll() {
+  findAll(
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+    @Cookies('mycookie') mycookie: string,
+  ) {
+    console.log('request.cookies', request.cookies, 'mycookie', mycookie);
     // throw new HttpException('Well, not really forbidden', HttpStatus.FORBIDDEN);
+    response.cookie('mycookie', 'very good');
     return this.userService.findAll();
   }
 

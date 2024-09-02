@@ -1,7 +1,10 @@
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { TaskModule } from '@/task/task.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -13,6 +16,7 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     CacheModule.register({
       ttl: 10000, // milliseconds
       max: 100, // maximum number of items in cache
@@ -30,6 +34,7 @@ import { UserModule } from './user/user.module';
     }),
     UserModule,
     CourseModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [
