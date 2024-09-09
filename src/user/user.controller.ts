@@ -8,16 +8,20 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseFilePipeBuilder,
   ParseIntPipe,
   Patch,
   Post,
   Req,
   Res,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
 
+import { avatarMulterOptions } from '@/common/avatar.multer';
 import { Cookies } from '@/common/cookie.param';
 import { Roles } from '@/common/roles.decorator';
 import { RolesGuard } from '@/common/roles.guard';
@@ -33,6 +37,31 @@ import { UserService } from './user.service';
 })
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Post('avatar')
+  @UseInterceptors(FileInterceptor('file', avatarMulterOptions))
+  async uploadFile(
+    @Body() body: any,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: 'jpeg|png',
+        })
+        .addMaxSizeValidator({
+          maxSize: 1024000,
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
+  ) {
+    console.log('file', file);
+    return {
+      success: true,
+      data: file,
+    };
+  }
 
   @Post()
   @HttpCode(HttpStatus.NO_CONTENT)
