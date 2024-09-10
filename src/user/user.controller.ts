@@ -85,6 +85,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('profile')
+  getProfile(@Req() req) {
+    return req.user || null;
+  }
+
   @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: string) {
