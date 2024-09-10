@@ -23,6 +23,7 @@ import { Request, Response } from 'express';
 
 import { avatarMulterOptions } from '@/common/avatar.multer';
 import { Cookies } from '@/common/cookie.param';
+import { Role } from '@/common/role.enum';
 import { Roles } from '@/common/roles.decorator';
 import { RolesGuard } from '@/common/roles.guard';
 
@@ -66,7 +67,7 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(RolesGuard)
-  @Roles(['admin'])
+  @Roles(Role.Admin)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }

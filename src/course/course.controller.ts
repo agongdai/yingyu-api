@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 
+import { Role } from '@/common/role.enum';
 import { Roles } from '@/common/roles.decorator';
 import { RolesGuard } from '@/common/roles.guard';
 
@@ -13,7 +14,7 @@ export class CourseController {
 
   @Post()
   @UseGuards(RolesGuard)
-  @Roles(['admin'])
+  @Roles(Role.Tutor)
   create(@Body() createCourseDto: CreateCourseDto) {
     return this.courseService.create(createCourseDto);
   }

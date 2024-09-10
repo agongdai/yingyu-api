@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
+import { Role } from '@/common/role.enum';
 import { Course } from '@/course/entities/course.entity';
 
 @Entity()
@@ -26,7 +27,7 @@ export class User {
   gender: string;
 
   @Column('simple-array')
-  roles: string[];
+  roles: Role[];
 
   @Column({ default: true })
   isActive: boolean;

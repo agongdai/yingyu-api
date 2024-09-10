@@ -1,5 +1,7 @@
 import { IsEmail, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
+import { Role } from '@/common/role.enum';
+
 export class CreateUserDto {
   @IsString()
   username: string;
@@ -23,5 +25,5 @@ export class CreateUserDto {
   @MaxLength(10, {
     each: true,
   })
-  roles: string[];
+  roles: Role[];
 }
