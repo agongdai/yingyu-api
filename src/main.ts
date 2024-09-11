@@ -2,6 +2,7 @@ import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 
 import { ClassValidatorPipe } from '@/common/class-validator.pipe';
 
@@ -10,7 +11,8 @@ import { HttpExceptionFilter } from './common/http-exception.filter';
 import { logger } from './common/logger.middleware';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.use(helmet());
   app.use(logger);
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ClassValidatorPipe());
