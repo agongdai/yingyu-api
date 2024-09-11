@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { ClassValidatorPipe } from '@/common/class-validator.pipe';
 
@@ -22,6 +23,15 @@ async function bootstrap() {
   });
   app.use(cookieParser());
   app.use(compression());
+
+  const config = new DocumentBuilder()
+    .setTitle('English API')
+    .setDescription('APIs for English learning platform')
+    .setVersion('1.0')
+    .addTag('Yingyu.io')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
 }

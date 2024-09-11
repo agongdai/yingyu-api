@@ -30,7 +30,7 @@ import { UserModule } from './user/user.module';
     // ttl, the time to live in milliseconds, and the limit, the maximum number of requests within the ttl
     ThrottlerModule.forRoot([
       {
-        ttl: 60000,
+        ttl: 10000,
         limit: 100,
       },
     ]),
