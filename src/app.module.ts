@@ -39,7 +39,7 @@ import { UserModule } from './user/user.module';
       host: '127.0.0.1',
       port: 3306,
       username: 'root',
-      password: '',
+      password: process.env.MYSQL_PASSWORD,
       database: 'yingyu',
       entities: [Course, User],
       synchronize: true,
