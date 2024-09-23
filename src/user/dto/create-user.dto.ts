@@ -12,6 +12,10 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
+  @IsString()
+  @IsOptional()
+  avatar: string;
+
   @IsInt({ message: 'Age must be an integer' })
   @Min(18, { message: 'Age must be greater than or equal to 18' })
   @Max(65, { message: 'Age must be less than or equal to 65' })

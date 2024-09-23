@@ -21,6 +21,9 @@ export class User {
   email: string;
 
   @Column()
+  avatar: string;
+
+  @Column()
   age: number;
 
   @Column()
