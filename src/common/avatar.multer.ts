@@ -3,7 +3,7 @@ import { extname } from 'path';
 
 export const avatarMulterOptions = {
   storage: diskStorage({
-    destination: './avatar',
+    destination: './public/avatar',
     filename: (req, file, cb) => {
       // Generating a 32 random chars long string
       const randomName = Array(32)
