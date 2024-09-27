@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as fs from 'fs';
 import { DeleteResult, Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,8 +30,19 @@ export class UserService {
     return this.userRepository.findOneBy({ username });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.userRepository.save(updateUserDto);
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const existingUser = await this.userRepository.findOneBy({ id });
+    if (!existingUser) {
+      throw new Error('User not found');
+    }
+
+    // Remove the existing avatar
+    const oldAvatar = existingUser.avatar;
+    if (oldAvatar && oldAvatar !== 'default.png' && updateUserDto.avatar !== oldAvatar) {
+      fs.unlinkSync(`./public/avatar/${oldAvatar}`);
+    }
+
+    return this.userRepository.update(id, updateUserDto);
   }
 
   async remove(id: number): Promise<DeleteResult> {

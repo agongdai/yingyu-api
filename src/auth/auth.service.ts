@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UserVisible } from '@/user/entities/user.visible';
 import { UserService } from '@/user/user.service';
+import { tailorUserInSession, tailorVisibleUser } from '@/user/user.utils';
 
 @Injectable()
 export class AuthService {
@@ -17,15 +17,8 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const visibleUser = user ? new UserVisible(user) : null;
-    const payload = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      avatar: user.avatar,
-      name: user.name,
-      roles: user.roles,
-    };
+    const visibleUser = user ? tailorVisibleUser(user) : null;
+    const payload = tailorUserInSession(user);
 
     return {
       ...visibleUser,

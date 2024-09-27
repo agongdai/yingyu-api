@@ -1,7 +1,6 @@
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -13,6 +12,7 @@ import {
   Patch,
   Post,
   Req,
+  Request as NestRequest,
   Res,
   UploadedFile,
   UseGuards,
@@ -26,10 +26,10 @@ import { Cookies } from '@/common/cookie.param';
 import { Role } from '@/common/role.enum';
 import { Roles } from '@/common/roles.decorator';
 import { RolesGuard } from '@/common/roles.guard';
+import { tailorVisibleUser } from '@/user/user.utils';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserVisible } from './entities/user.visible';
 import { UserService } from './user.service';
 
 @Controller({
@@ -42,6 +42,7 @@ export class UserController {
   @Post('avatar')
   @UseInterceptors(FileInterceptor('file', avatarMulterOptions))
   async uploadFile(
+    @NestRequest() request: any,
     @Body() body: any,
     @UploadedFile(
       new ParseFilePipeBuilder()
@@ -57,10 +58,15 @@ export class UserController {
     )
     file: Express.Multer.File,
   ) {
-    console.log('file', file);
+    console.log('file', file, 'request', request.user);
+    await this.userService.update(request.user.id, { avatar: file.filename });
+
     return {
       success: true,
-      data: file,
+      data: {
+        ...request.user,
+        avatar: file.filename,
+      },
     };
   }
 
@@ -91,11 +97,10 @@ export class UserController {
     return req.user || null;
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: string) {
     const user = await this.userService.findOne(+id);
-    return user ? new UserVisible(user) : null;
+    return user ? tailorVisibleUser(user) : null;
   }
 
   @Patch(':id')
