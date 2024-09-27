@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import { DeleteResult, Repository } from 'typeorm';
@@ -33,7 +33,7 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const existingUser = await this.userRepository.findOneBy({ id });
     if (!existingUser) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     // Remove the existing avatar

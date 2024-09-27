@@ -23,6 +23,7 @@ import { Request, Response } from 'express';
 
 import { avatarMulterOptions } from '@/common/avatar.multer';
 import { Cookies } from '@/common/cookie.param';
+import { ResponseMessage } from '@/common/response-message.decorator';
 import { Role } from '@/common/role.enum';
 import { Roles } from '@/common/roles.decorator';
 import { RolesGuard } from '@/common/roles.guard';
@@ -62,11 +63,8 @@ export class UserController {
     await this.userService.update(request.user.id, { avatar: file.filename });
 
     return {
-      success: true,
-      data: {
-        ...request.user,
-        avatar: file.filename,
-      },
+      ...request.user,
+      avatar: file.filename,
     };
   }
 
@@ -81,6 +79,7 @@ export class UserController {
   @Get()
   @CacheTTL(60000)
   @UseInterceptors(CacheInterceptor)
+  @ResponseMessage('This is from controller haha.')
   findAll(
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,

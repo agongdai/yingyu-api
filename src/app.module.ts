@@ -13,6 +13,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { logger } from './common/logger.middleware';
+import { ResponseInterceptor } from './common/response.interceptor';
 import { CourseModule } from './course/course.module';
 import { Course } from './course/entities/course.entity';
 import { User } from './user/entities/user.entity';
@@ -62,6 +63,10 @@ import { UserModule } from './user/user.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: CacheInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
     },
     AppService,
   ],
