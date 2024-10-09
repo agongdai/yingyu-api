@@ -1,7 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Role } from '@/common/role.enum';
-import { Course } from '@/course/entities/course.entity';
+import { Semester } from '@/semester/entities/semester.entity';
 
 @Entity()
 export class User {
@@ -35,6 +35,7 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @OneToMany(() => Course, (course) => course.tutor)
-  courses: Course[];
+  @ManyToMany(() => Semester, (semester) => semester.students)
+  @JoinTable()
+  semesters: Semester[];
 }

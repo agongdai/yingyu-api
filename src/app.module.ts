@@ -7,6 +7,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthGuard } from '@/common/auth.guard';
+import { Semester } from '@/semester/entities/semester.entity';
 import { TaskModule } from '@/task/task.module';
 
 import { AppController } from './app.controller';
@@ -16,6 +17,7 @@ import { logger } from './common/logger.middleware';
 import { ResponseInterceptor } from './common/response.interceptor';
 import { CourseModule } from './course/course.module';
 import { Course } from './course/entities/course.entity';
+import { SemesterModule } from './semester/semester.module';
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 
@@ -42,13 +44,14 @@ import { UserModule } from './user/user.module';
       username: 'root',
       password: process.env.MYSQL_PASSWORD,
       database: 'yingyu',
-      entities: [Course, User],
+      entities: [Course, User, Semester],
       synchronize: true,
     }),
     UserModule,
     CourseModule,
     TaskModule,
     AuthModule,
+    SemesterModule,
   ],
   controllers: [AppController],
   providers: [

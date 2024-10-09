@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CreateCourseDto {
   @IsString()
@@ -12,12 +12,7 @@ export class CreateCourseDto {
   @IsOptional()
   description?: string;
 
-  @IsInt()
+  @IsBoolean()
   @IsOptional()
-  tutorId?: number;
-
-  @MaxLength(20, {
-    each: true,
-  })
-  tags: string[];
+  isActive?: boolean;
 }

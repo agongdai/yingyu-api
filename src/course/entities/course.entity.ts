@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { User } from '@/user/entities/user.entity';
+import { Semester } from '@/semester/entities/semester.entity';
 
 @Entity()
 export class Course {
@@ -22,9 +22,6 @@ export class Course {
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToOne(() => User, (user) => user.courses)
-  tutor: User;
-
-  @Column()
-  tutorId: number;
+  @OneToMany(() => Semester, (semester) => semester.course)
+  semesters: Semester[];
 }
